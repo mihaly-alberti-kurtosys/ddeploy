@@ -18,34 +18,35 @@ Example Site Config file
 
 NOTE: all property values are case-sensitive!
 
-	exports.config = {
-		"url": "http://website.com/",
-		"client": "someclient",
-		"website": "somewebsite",
-		"publish_type": 1, // 0: manual publish, 1: whole website, 2: only changed web pages
+```javascript
+exports.config = {
+	"url": "http://website.com/",
+	"client": "someclient",
+	"website": "somewebsite",
+	"publish_type": 1, // 0: manual publish, 1: whole website, 2: only changed web pages
 
-		"components": [
-			{
-				"local": "a.txt",
-				"remote": "a file",
-				"type": "Text component",
-				"webpage": "somewebpage" // optional for deployment (prev/publish)
-			},
-			{
-				"local": "b.txt",
-				"remote": "b file",
-				"type": "Text component",
-				"webpage": "somewebpage" // optional for deployment (prev/publish)
-			},
-			{
-				"local": "c.txt",
-				"remote": "c file",
-				"type": "Text component",
-				"webpage": "somewebpage" // optional for deployment (prev/publish)
-			}
-		]
-	}
-
+	"components": [
+		{
+			"local": "a.txt",
+			"remote": "a file",
+			"type": "Text component",
+			"webpage": "somewebpage" // optional for deployment (prev/publish)
+		},
+		{
+			"local": "b.txt",
+			"remote": "b file",
+			"type": "Text component",
+			"webpage": "somewebpage" // optional for deployment (prev/publish)
+		},
+		{
+			"local": "c.txt",
+			"remote": "c file",
+			"type": "Text component",
+			"webpage": "somewebpage" // optional for deployment (prev/publish)
+		}
+	]
+}
+```
 
 
 
@@ -61,24 +62,28 @@ Usage with Grunt
 -  Include `grunt.loadNpmTasks('grunt-exec');` in `Gruntfile.js`
 -  Create a Grunt task in `Gruntfile.js` (inside `grunt.initConfig({ ... })` block)
 
-		exec: {
-			deploy_to_fundnet_uat: {
-				command: 'phantomjs ddeploy.js cms_config_uat.js cms_user_uat.js'
-			},
-			deploy_to_fundnet_prod: {
-				command: 'phantomjs ddeploy.js cms_config_prod.js cms_user_prod.js'
-			}
-		}
+```javascript
+exec: {
+	deploy_to_fundnet_uat: {
+		command: 'phantomjs ddeploy.js cms_config_uat.js cms_user_uat.js'
+	},
+	deploy_to_fundnet_prod: {
+		command: 'phantomjs ddeploy.js cms_config_prod.js cms_user_prod.js'
+	}
+}
+```
 
 -  Then register the tasks
 
-		grunt.registerTask('ddeploy-uat', [
-			'exec:deploy_to_fundnet_uat'
-		]);
+```javascript
+grunt.registerTask('ddeploy-uat', [
+	'exec:deploy_to_fundnet_uat'
+]);
 
-		grunt.registerTask('ddeploy-prod', [
-			'exec:deploy_to_fundnet_prod'
-		]);
+grunt.registerTask('ddeploy-prod', [
+	'exec:deploy_to_fundnet_prod'
+]);
+```
 
 -  You can now run `grunt ddeploy-uat` or `grunt ddeploy-prod` to deploy files to CMS
 
