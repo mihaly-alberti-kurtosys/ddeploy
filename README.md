@@ -22,7 +22,7 @@ NOTE: all property values are case-sensitive!
 		"url": "http://website.com/",
 		"client": "someclient",
 		"website": "somewebsite",
-		"publish_type": 1, // 1: whole website, 2: only changed web pages
+		"publish_type": 1, // 0: manual publish, 1: whole website, 2: only changed web pages
 
 		"components": [
 			{
