@@ -55,6 +55,35 @@ Example User Credentials file
 	exports.password = "yourpassword"
 
 
+Usage with Grunt
+----------------
+-  Install `grunt-exec`
+-  Include `grunt.loadNpmTasks('grunt-exec');` in `Gruntfile.js`
+-  Create a Grunt task in `Gruntfile.js` (inside `grunt.initConfig({ ... })` block)
+
+		exec: {
+			deploy_to_fundnet_uat: {
+				command: 'phantomjs ddeploy.js cms_config_uat.js cms_user_uat.js'
+			},
+			deploy_to_fundnet_prod: {
+				command: 'phantomjs ddeploy.js cms_config_prod.js cms_user_prod.js'
+			}
+		}
+
+-  Then register the tasks
+
+		grunt.registerTask('ddeploy-uat', [
+			'exec:deploy_to_fundnet_uat'
+		]);
+
+		grunt.registerTask('ddeploy-prod', [
+			'exec:deploy_to_fundnet_prod'
+		]);
+
+-  You can now run `grunt ddeploy-uat` or `grunt ddeploy-prod` to deploy files to CMS
+
+
+
 TODO
 ====
 -  "Article" content type
