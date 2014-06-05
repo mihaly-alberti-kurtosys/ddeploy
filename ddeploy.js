@@ -1,63 +1,67 @@
-// TOOD handle change password
-// TODO check which file changed since the last publish, publish only the newly changed files
-// TODO error handling
-// TODO :contains might not work properly with Text Component name "Test" and "Test 2" -- cause it's not exact mactch
-// TODO get website by "Belongs to" tab content - and preview/publish by that
+var system = require('system');
+var args = system.args;
 
-try {
-	var SITE_USER = require('./cms_user');
-}
-catch(err) {
-	if(typeof SITE_USER == 'undefined'){
-		console.log('Error: credentials file not found!');
-		console.log('Please create a "cms_user.js" in the root directory of this project with the following content: ');
-		console.log('    exports.username = "yourusername";');
-		console.log('    exports.password = "yourpassword"');
-		console.log('\nDON\'T FORGET TO ADD THIS FILE TO IGNORE ON VERSION CONTROL!');
-		phantom.exit(1);
+
+if (args.length === 1) {
+	try {
+		var SITE_USER = require('./cms_user');
+	}
+	catch(err) {
+		if(typeof SITE_USER == 'undefined'){
+			console.error('ERROR: credentials file not found!');
+			console.info('Please create a "cms_user.js" in the root directory of this project with the following content: ');
+			console.info('    exports.username = "yourusername";');
+			console.info('    exports.password = "yourpassword"');
+			console.info('\nDON\'T FORGET TO ADD THIS FILE TO IGNORE ON VERSION CONTROL!');
+			phantom.exit(1);
+		}
+
 	}
 
-}
-
-try {
-	var SITE = require('./cms_config');
-}
-catch(err) {
-	if(typeof SITE == 'undefined'){
-		console.log('Error: config file not found!');
-		console.log('Please create a "cms_config.js" in the root directory. Example file: ');
-		console.log('\n');
-		console.log('exports.config = {');
-		console.log('	"url": "http://website.com/",');
-		console.log('	"client": "someclient",');
-		console.log('	"website": "somewebsite",');
-		console.log('	"publish_type": 1, // 1: whole website, 2: only changed web pages');
-		console.log('');
-		console.log('	"components": [');
-		console.log('		{');
-		console.log('			"local": "a.txt",');
-		console.log('			"remote": "upload test",');
-		console.log('			"type": "Text component",');
-		console.log('			"webpage": "Upload test" // optional for deployment (prev/publish)');
-		console.log('		},');
-		console.log('		{');
-		console.log('			"local": "b.txt",');
-		console.log('			"remote": "upload test 2",');
-		console.log('			"type": "Text component",');
-		console.log('			"webpage": "Upload test 2" // optional for deployment (prev/publish)');
-		console.log('		},');
-		console.log('		{');
-		console.log('			"local": "c.txt",');
-		console.log('			"remote": "upload test 3",');
-		console.log('			"type": "Text component",');
-		console.log('			"webpage": "Upload test 3" // optional for deployment (prev/publish)');
-		console.log('		}');
-		console.log('	]');
-		console.log('}');
-
-		phantom.exit(1);
+	try {
+		var SITE = require('./cms_config');
 	}
+	catch(err) {
+		if(typeof SITE == 'undefined'){
+			console.error('ERROR: config file not found!');
+			console.info('Please create a "cms_config.js" in the root directory. Example file: ');
+			console.info('\n');
+			console.info('exports.config = {');
+			console.info('	"url": "http://website.com/",');
+			console.info('	"client": "someclient",');
+			console.info('	"website": "somewebsite",');
+			console.info('	"publish_type": 1, // 0: manual publish, 1: whole website, 2: only changed web pages');
+			console.info('');
+			console.info('	"components": [');
+			console.info('		{');
+			console.info('			"local": "a.txt",');
+			console.info('			"remote": "upload test",');
+			console.info('			"type": "Text component",');
+			console.info('			"webpage": "Upload test" // optional for deployment (prev/publish)');
+			console.info('		},');
+			console.info('		{');
+			console.info('			"local": "b.txt",');
+			console.info('			"remote": "upload test 2",');
+			console.info('			"type": "Text component",');
+			console.info('			"webpage": "Upload test 2" // optional for deployment (prev/publish)');
+			console.info('		},');
+			console.info('		{');
+			console.info('			"local": "c.txt",');
+			console.info('			"remote": "upload test 3",');
+			console.info('			"type": "Text component",');
+			console.info('			"webpage": "Upload test 3" // optional for deployment (prev/publish)');
+			console.info('		}');
+			console.info('	]');
+			console.info('}');
 
+			phantom.exit(1);
+		}
+
+	}
+}
+else {
+	var SITE = require('./'+args[1]);
+	var SITE_USER = require('./'+args[2]);
 }
 
 SITE.username = SITE_USER.username;
@@ -97,11 +101,12 @@ function waitFor(testFx, onReady, timeOutMillis) {
 			if ( (new Date().getTime() - start < maxtimeOutMillis) && !condition ) {
 				// If not time-out yet and condition not yet fulfilled
 				condition = (typeof(testFx) === "string" ? eval(testFx) : testFx()); //< defensive code
+				console.log('...');
 			} else {
 				if(!condition) {
 					// If condition still not fulfilled (timeout but condition is 'false')
-					console.log("'waitFor()' timeout");
-					page.render('timeout.png');
+					// console.log("'waitFor()' timeout");
+					// page.render('timeout.png');
 					phantom.exit(1);
 				} else {
 					// Condition fulfilled (timeout and/or condition is 'true')
@@ -110,13 +115,13 @@ function waitFor(testFx, onReady, timeOutMillis) {
 					clearInterval(interval); //< Stop this interval
 				}
 			}
-		}, 250); //< repeat check every 250ms
+		}, 500);
 };
 
 // http://stackoverflow.com/questions/15739263/phantomjs-click-an-element
 function click(el){
-//	console.log('   > Found element:', el);
-//	console.log('   > Click on element:', el.innerHTML);
+	// console.log('   > Found element:', el);
+	// console.log('   > Click on element:', el.innerHTML);
     var ev = document.createEvent("MouseEvent");
     ev.initMouseEvent(
         "click",
@@ -139,12 +144,12 @@ page.open(SITE.config.url, function (status) {
 
 	// Check for page load success
 	if (status !== "success") {
-		console.log("Unable to access network");
+		console.error("ERROR: Unable to access network");
 	} else {
 
 		loadLoginForm = function() {
-			console.log('Load login form');
-			page.render('screenshot_'+screenshot+'.png'); screenshot++;
+			console.log('-- Load login form');
+			// page.render('screenshot_'+screenshot+'.png'); screenshot++;
 			waitFor(function() {
 				// Check if the page is loaded
 				return page.evaluate(function() {
@@ -154,8 +159,8 @@ page.open(SITE.config.url, function (status) {
 		}
 
 		fillLoginForm = function() {
-			console.log('Fill login form');
-			page.render('screenshot_'+screenshot+'.png'); screenshot++;
+			console.log('-- Fill login form');
+			// page.render('screenshot_'+screenshot+'.png'); screenshot++;
 			// fill login form
 			page.evaluate(function(SITE) {
 				$("#Authentication1_TextboxUsername").val(SITE.username);
@@ -175,8 +180,8 @@ page.open(SITE.config.url, function (status) {
 
 
 		clickSystemTypes = function() {
-			console.log('Select System Types');
-			page.render('screenshot_'+screenshot+'.png'); screenshot++;
+			console.log('-- Select System Types');
+			// page.render('screenshot_'+screenshot+'.png'); screenshot++;
 
 			page.evaluate(function(click) {
 				// click on folder dropdown to open folder
@@ -186,47 +191,35 @@ page.open(SITE.config.url, function (status) {
 			waitFor(function() {
 				// Check if list is populated
 				return page.evaluate(function() {
-					return $("#app-loading-mask").length == 0;
+					return $("#app-loading-mask").length == 0 && $('.x-panel-bwrap div[id^=ext-comp]:visible .k-et-wrap').length > 0;
 				});
-			}, textComponent);
+			}, clickTextComponent);
 		}
 
-		textComponent = function() {
-			console.log('Select text component');
-			page.render('screenshot_'+screenshot+'.png'); screenshot++;
 
-			page.evaluate(function(SITE) {
-				$("td.x-toolbar-cell.k-toolbar-text-fill input").val(SITE.config.components[current_component].type);
-			}, SITE);
+		clickTextComponent = function() {
+			console.log('-- Component: ', SITE.config.components[current_component].type);
+			page.evaluate(function(click, SITE, current_component) {
+				var compo = SITE.config.components[current_component].type.toLowerCase().replace(/\s/g, "");
+				click($('div.k-tab.k-tab-'+compo+' span:contains('+SITE.config.components[current_component].type+')')[0]);
+			}, click, SITE, current_component);
 
 			waitFor(function() {
 				// Check if list is populated
 				return page.evaluate(function() {
-					return $("#app-loading-mask").length == 0;
-				});
-			}, FilltextComponent);
-		}
-
-
-		FilltextComponent = function() {
-			page.evaluate(function(click, SITE) {
-				click($("div.k-tab.k-tab-textcomponent span:contains("+SITE.config.components[current_component].type+")").val(SITE.config.components[current_component].type)[0]);
-			}, click, SITE);
-
-			waitFor(function() {
-				// Check if list is populated
-				return page.evaluate(function() {
-					return $("#app-loading-mask").length == 0 && $('div[id^=entitytype-tab-] div.k-e-wrap').length > 0;
+					return ($('div[id^=entitytype-tab-] div.k-e-wrap').length > 0 && $("#app-loading-mask").length == 0);
 				});
 			}, uploadtest);
+
+			// page.render('screenshot_'+screenshot+'.png'); screenshot++;
 		}
 
 //////////////////////////////////////////
 
 
 		uploadtest = function() {
-			console.log('Uploading file ', SITE.config.components[current_component].local, '->', SITE.config.components[current_component].remote);
-			page.render('screenshot_'+screenshot+'.png'); screenshot++;
+			console.info('Uploading file ', SITE.config.components[current_component].local, '->', SITE.config.components[current_component].remote);
+			// page.render('screenshot_'+screenshot+'.png'); screenshot++;
 
 			var pos = page.evaluate(function(SITE, current_component) {
 
@@ -239,7 +232,7 @@ page.open(SITE.config.url, function (status) {
 
 			// console.log('position for ', SITE.config.components[current_component].remote, JSON.stringify(pos))
 			if(pos == null){
-				console.log('Error getting coordinates for component, please re-run the script');
+				console.error('ERROR getting coordinates for component, please re-run the script');
 				phantom.exit(1);
 			}
 			page.sendEvent('click', pos.left+5, pos.top+5, 'left');
@@ -254,8 +247,8 @@ page.open(SITE.config.url, function (status) {
 		}
 
 		fillContent = function() {
-			// console.log('Fill up component with local file content');
-			page.render('screenshot_'+screenshot+'.png'); screenshot++;
+			// console.info('-- Fill up component with local file content');
+			// page.render('screenshot_'+screenshot+'.png'); screenshot++;
 
 			var fs = require('fs'),
 			    system = require('system');
@@ -269,16 +262,25 @@ page.open(SITE.config.url, function (status) {
 			    f = fs.open(SITE.config.components[current_component].local, "r");
 			    content = f.read();
 			} catch (e) {
-			    console.log(e);
+			    console.error(e);
 			}
 
 			if (f) {
 			    f.close();
 			}
 
-			page.evaluate(function(click, SITE, current_component, content) {
+			if(content == null || content == '') {
+				console.error('ERROR: Unable to get contents of file, check if local path is correct');
+				phantom.exit(1);
+			}
 
-				$('div[id^=entity-tab].x-tab-panel:not(.x-hide-display)').find('span:contains(Content settings)').parents('fieldset').eq(0).find('textarea').val(content);
+			page.evaluate(function(click, SITE, current_component, content) {
+				if(SITE.config.components[current_component].type == 'Text component'){
+					$('div[id^=entity-tab].x-tab-panel:not(.x-hide-display)').find('span:contains(Content settings)').parents('fieldset').eq(0).find('textarea').val(content);
+				} else if(SITE.config.components[current_component].type == 'Web Include') {
+					$('div[id^=entity-tab].x-tab-panel:not(.x-hide-display)').find('textarea').val(content);
+				}
+				console.info('Saving file...');
 				click($('div[id^=entity-tab].x-tab-panel:not(.x-hide-display)').find('button.k-form-save')[0]);
 			}, click, SITE, current_component, content);
 
@@ -292,15 +294,69 @@ page.open(SITE.config.url, function (status) {
 
 		done = function() {
 			if(current_component >= SITE.config.components.length-1){
-				console.log("--- Done ---");
-				page.render('screenshot_'+screenshot+'.png'); screenshot++;
-				phantom.exit();
+
+				switch(SITE.config.publish_type) {
+					case 0:
+						console.info('\n\n--- Done \\o/ ---');
+						console.info('--- You can now deploy the Site manually. ---');
+						phantom.exit();
+						break;
+					case 1:
+						// deploy();
+						console.info('\n\nSorry, not implemented yet :(');
+						phantom.exit();
+						break;
+
+					case 2:
+						console.info('\n\nSorry, not implemented yet :(');
+						phantom.exit();
+						break;
+				}
+
+				// page.render('screenshot_'+screenshot+'.png'); screenshot++;
+
 			} else {
 				current_component++;
-				FilltextComponent();  // go back to text components tab
+				clickTextComponent();  // go back to text components tab
 			}
 
 		}
+
+		// deploy = function() {
+		// 	console.log('Deploying website: ' + SITE.config.website);
+
+		// 	page.evaluate(function(click, SITE) {
+		// 		click($('div.k-tab.k-tab-website span:contains(Website)')[0]);
+		// 	}, click, SITE);
+
+		// 	waitFor(function() {
+		// 		// Check if list is populated
+		// 		return page.evaluate(function() {
+		// 			return ($('div[id^=entitytype-tab-] div.k-e-wrap').length > 0 && $("#app-loading-mask").length == 0);
+		// 		});
+		// 	}, showDropMenu);
+
+
+		// };
+
+		// showDropMenu = function() {
+		// 	page.evaluate(function(click, SITE) {
+		// 		click($('.x-panel-body.k-entity-tab.x-panel-body-noheader.x-panel-body-noborder span:contains('+SITE.config.website+')').next('.k-entity-inline')[0]);
+		// 	}, click, SITE);
+
+		// 	waitFor(function() {
+		// 		// Check if list is populated
+		// 		return page.evaluate(function() {
+		// 			return true;
+		// 		});
+		// 	}, checkOutAll);
+
+		// };
+
+
+
+
+/* --------------------------------------------------------------------------------------------- */
 
 
 		// start the process
