@@ -145,6 +145,7 @@ page.open(SITE.config.url, function (status) {
 	// Check for page load success
 	if (status !== "success") {
 		console.error("ERROR: Unable to access network");
+		phantom.exit(1);
 	} else {
 
 		loadLoginForm = function() {
