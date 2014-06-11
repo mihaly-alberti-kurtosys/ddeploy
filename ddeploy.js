@@ -12,7 +12,7 @@ if (args.length === 1) {
 			console.info('Please create a "cms_user.js" in the root directory of this project with the following content: ');
 			console.info('    exports.username = "yourusername";');
 			console.info('    exports.password = "yourpassword"');
-			console.info('\nDON\'T FORGET TO ADD THIS FILE TO IGNORE ON VERSION CONTROL!');
+			console.info('\nDON\'T FORGET TO ADD THIS FILE TO IGNORE IN VERSION CONTROL!');
 			phantom.exit(1);
 		}
 

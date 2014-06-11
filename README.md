@@ -56,6 +56,8 @@ Example User Credentials file
 	exports.password = "yourpassword"
 
 
+__Don't forget to add this file to ignore in version control!__
+
 Usage with Grunt
 ----------------
 -  Install `grunt-exec`
