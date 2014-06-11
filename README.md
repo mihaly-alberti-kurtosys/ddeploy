@@ -1,7 +1,7 @@
 ddeploy
 =======
 
-Automated deploying files to CMS
+Automated deploying files to Kurtosys CMS
 
 
 Optional attributes to pass
@@ -103,4 +103,8 @@ TODO
 Contributing
 ============
 
+In lieu of a formal styleguide, take care to maintain the existing coding style.
+
 Feel free to fork this project and make improvements. When you've finished, create a [pull request](https://help.github.com/articles/using-pull-requests) for the changes you've made.
+
+
