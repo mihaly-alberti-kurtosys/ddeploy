@@ -281,6 +281,10 @@ page.open(SITE.config.url, function (status) {
 				} else if(SITE.config.components[current_component].type == 'Web Include') {
 					$('div[id^=entity-tab].x-tab-panel:not(.x-hide-display)').find('textarea').val(content);
 				}
+
+			}, click, SITE, current_component, content);
+
+			page.evaluate(function(click, SITE, current_component, content) {
 				console.info('Saving file...');
 				click($('div[id^=entity-tab].x-tab-panel:not(.x-hide-display)').find('button.k-form-save')[0]);
 			}, click, SITE, current_component, content);
