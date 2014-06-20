@@ -115,7 +115,7 @@ function waitFor(testFx, onReady, timeOutMillis) {
 					clearInterval(interval); //< Stop this interval
 				}
 			}
-		}, 500);
+		}, 250);
 };
 
 // http://stackoverflow.com/questions/15739263/phantomjs-click-an-element
@@ -242,7 +242,13 @@ page.open(SITE.config.url, function (status) {
 			waitFor(function() {
 				// Check if list is populated
 				return page.evaluate(function() {
-					return $("#app-loading-mask").length == 0;
+					return (
+						$("#app-loading-mask").length == 0 &&
+						(
+							$('div[id^=entity-tab].x-tab-panel:not(.x-hide-display)').find('span:contains(Content settings)').parents('fieldset').eq(0).find('textarea').length > 0 ||
+							$('div[id^=entity-tab].x-tab-panel:not(.x-hide-display)').find('textarea').length > 0
+						)
+					);
 				});
 			}, fillContent);
 		}
