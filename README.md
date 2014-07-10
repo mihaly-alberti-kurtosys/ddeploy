@@ -90,18 +90,6 @@ grunt.registerTask('ddeploy-prod', [
 -  You can now run `grunt ddeploy-uat` or `grunt ddeploy-prod` to deploy files to CMS
 
 
-
-TODO
-====
--  "Article" content type
--  handle change password page
--  check which file changed since the last publish, publish only the newly changed files
--  error handling
--  :contains might not work properly with Text Component name "Test" and "Test 2" -- cause it's not exact mactch
--  get website by "Belongs to" tab content - and preview/publish by that
--  textComponent() in done() -> should be optimized
-
-
 Contributing
 ============
 
