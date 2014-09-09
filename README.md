@@ -90,6 +90,22 @@ grunt.registerTask('ddeploy-prod', [
 -  You can now run `grunt ddeploy-uat` or `grunt ddeploy-prod` to deploy files to CMS
 
 
+Possible Errors
+===============
+
+If you try to publish to an `https` site and there is a problem in the background with the certificates, you can ignore them with `--ignore-ssl-errors=yes` like:
+```javascript
+exec: {
+  deploy_to_fundnet_uat: {
+    command: 'phantomjs --ignore-ssl-errors=yes ddeploy.js cms_config_uat.js cms_user_uat.js'
+  },
+  deploy_to_fundnet_prod: {
+    command: 'phantomjs --ignore-ssl-errors=yes ddeploy.js cms_config_prod.js cms_user_prod.js'
+  }
+}
+```
+
+
 Contributing
 ============
 
