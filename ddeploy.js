@@ -83,6 +83,12 @@ var testindex = 0;
 var loadInProgress = false;
 
 
+page.onResourceError = function(resourceError) {
+    page.reason = resourceError.errorString;
+    page.reason_url = resourceError.url;
+};
+
+
 page.onConsoleMessage = function(msg) {
 	console.log(msg);
 };
@@ -163,7 +169,10 @@ page.open(SITE.config.url, function (status) {
 
 	// Check for page load success
 	if (status !== "success") {
-		console.error("ERROR: Unable to access network");
+    console.log(
+      "Error opening url \"" + page.reason_url
+      + "\": " + page.reason
+    );
 		phantom.exit(1);
 	} else {
 
