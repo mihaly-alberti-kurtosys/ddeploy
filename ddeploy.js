@@ -67,6 +67,10 @@ else {
 SITE.username = SITE_USER.username;
 SITE.password = SITE_USER.password;
 
+if(SITE.config.url.indexOf('AppConfigurationManager.aspx') == -1){
+	SITE.config.url += '/AppConfigurationManager.aspx';
+}
+
 var current_component = 0;
 var screenshot = 0;
 
