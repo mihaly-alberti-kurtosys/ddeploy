@@ -117,5 +117,6 @@ Feel free to fork this project and make improvements. When you've finished, crea
 TODO
 ====
 
--  "publish_type": 2 // only changed web pages
--  When a file is on the 2nd page of the e.g.: Web Include page, it fails to filter, the uploading fails
+- [ ] "publish_type": 2 // only changed web pages
+- [ ] When a file is on the 2nd page of the e.g.: Web Include page, it fails to filter, the uploading fails
+- [ ] Wait for page to be published before exiting
