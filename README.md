@@ -114,3 +114,8 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 Feel free to fork this project and make improvements. When you've finished, create a [pull request](https://help.github.com/articles/using-pull-requests) for the changes you've made.
 
 
+TODO
+====
+
+-  "publish_type": 2 // only changed web pages
+-  When a file is on the 2nd page of the e.g.: Web Include page, it fails to filter, the uploading fails
