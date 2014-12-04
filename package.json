@@ -1,0 +1,24 @@
+{
+	"name": "ddeploy",
+	"version": "0.1.0",
+	"description": "Automated deploying files to Kurtosys CMS",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:mihaly-alberti-kurtosys/ddeploy"
+	},
+	"keywords": [],
+	"author": "mihaly.alberti@kurtosys.com",
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": ""
+		}
+	],
+	"dependencies": {
+		"MD5": "^1.2.1",
+		"jsonfile": "^2.0.0"
+	},
+	"devDependencies": {},
+	"main": "",
+	"scripts": {}
+}
